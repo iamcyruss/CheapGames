@@ -35,7 +35,7 @@ while running:
                     if float(game['salePrice']) < float(game['normalPrice']):
                         for store in store_response_init_json:
                             if game['storeID'] in store['storeID']:
-                                print(f"Title: {game['title']}\nStore ID: {game['storeID']}\nStore Name: {store['storeName']}\nNormal Price: {game['normalPrice']}\nSale Price: {game['salePrice']}")
+                                print(f"Title: {game['title']}\nStore Name: {store['storeName']}\nNormal Price: {game['normalPrice']}\nSale Price: {game['salePrice']}")
                     else:
                         pass
                 running_game_title = False
