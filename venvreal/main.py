@@ -26,6 +26,12 @@ while running:
                 cheapshark_response.raise_for_status()
                 cheapshark_response_json = cheapshark_response.json()
                 print(cheapshark_response_json)
+                print(f"Title: {cheapshark_response_json[0]['title']}\nNormal Price: {cheapshark_response_json[0]['normalPrice']}")
+                for game in cheapshark_response_json:
+                    if float(game['salePrice']) < float(game['normalPrice']):
+                        print(f"Title: {game['title']}\nStore ID: {game['storeID']}\nSale Price: {game['salePrice']}")
+                    else:
+                        pass
                 running_game_title = False
             else:
                 print("I didnt understand your choice. Please try again.")
