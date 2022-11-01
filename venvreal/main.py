@@ -2,9 +2,9 @@ import requests
 
 CHEAPSHARK_API_DEALS = "https://www.cheapshark.com/api/1.0/deals"
 CHEAPSHARK_API_STORES = "https://www.cheapshark.com/api/1.0/stores"
+
+
 running = True
-
-
 while running:
     user_input = input("Get deals press g\nGet List of Stores press s\nGet deal details press d\n")
     store_response_init = requests.get(url=CHEAPSHARK_API_STORES)
@@ -30,12 +30,16 @@ while running:
                 cheapshark_response.raise_for_status()
                 cheapshark_response_json = cheapshark_response.json()
                 print(cheapshark_response_json)
-                print(f"Title: {cheapshark_response_json[0]['title']}\nNormal Price: {cheapshark_response_json[0]['normalPrice']}")
+                print(f"Title: {cheapshark_response_json[0]['title']}\n"
+                      f"Normal Price: {cheapshark_response_json[0]['normalPrice']}")
                 for game in cheapshark_response_json:
                     if float(game['salePrice']) < float(game['normalPrice']):
                         for store in store_response_init_json:
                             if game['storeID'] in store['storeID']:
-                                print(f"Title: {game['title']}\nStore Name: {store['storeName']}\nNormal Price: {game['normalPrice']}\nSale Price: {game['salePrice']}")
+                                print(f"Title: {game['title']}\n"
+                                      f"Store Name: {store['storeName']}\n"
+                                      f"Normal Price: {game['normalPrice']}\n"
+                                      f"Sale Price: {game['salePrice']}")
                     else:
                         pass
                 running_game_title = False
