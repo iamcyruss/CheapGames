@@ -7,6 +7,10 @@ running = True
 
 while running:
     user_input = input("Get deals press g\nGet List of Stores press s\nGet deal details press d\n")
+    store_response_init = requests.get(url=CHEAPSHARK_API_STORES)
+    store_response_init.raise_for_status()
+    store_response_init_json = store_response_init.json()
+    print(store_response_init_json)
     if user_input.lower() == 'g':
         running_game_title = True
         while running_game_title:
@@ -29,7 +33,9 @@ while running:
                 print(f"Title: {cheapshark_response_json[0]['title']}\nNormal Price: {cheapshark_response_json[0]['normalPrice']}")
                 for game in cheapshark_response_json:
                     if float(game['salePrice']) < float(game['normalPrice']):
-                        print(f"Title: {game['title']}\nStore ID: {game['storeID']}\nSale Price: {game['salePrice']}")
+                        for store in store_response_init_json:
+                            if game['storeID'] in store['storeID']:
+                                print(f"Title: {game['title']}\nStore ID: {game['storeID']}\nStore Name: {store['storeName']}\nNormal Price: {game['normalPrice']}\nSale Price: {game['salePrice']}")
                     else:
                         pass
                 running_game_title = False
