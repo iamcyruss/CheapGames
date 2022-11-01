@@ -2,6 +2,7 @@ import requests
 
 CHEAPSHARK_API_DEALS = "https://www.cheapshark.com/api/1.0/deals"
 CHEAPSHARK_API_STORES = "https://www.cheapshark.com/api/1.0/stores"
+CHEAPSHARP_REDIRECT = "https://www.cheapshark.com/redirect?dealID="
 
 
 running = True
@@ -24,7 +25,8 @@ while running:
             elif game_title.lower() == 'y':
                 user_game_title = input("What's the game title you'd liek to search for?\n")
                 game_params = {
-                    'title': user_game_title
+                    'title': user_game_title,
+                    'sortBy': 'Price'
                 }
                 cheapshark_response = requests.get(url=CHEAPSHARK_API_DEALS, params=game_params)
                 cheapshark_response.raise_for_status()
@@ -39,7 +41,8 @@ while running:
                                 print(f"Title: {game['title']}\n"
                                       f"Store Name: {store['storeName']}\n"
                                       f"Normal Price: {game['normalPrice']}\n"
-                                      f"Sale Price: {game['salePrice']}")
+                                      f"Sale Price: {game['salePrice']}\n"
+                                      f"Link: {CHEAPSHARP_REDIRECT+game['dealID']}")
                     else:
                         pass
                 running_game_title = False
