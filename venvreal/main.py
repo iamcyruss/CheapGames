@@ -25,17 +25,22 @@ def search_game(user_game_title):
     cheapshark_response.raise_for_status()
     cheapshark_response_json = cheapshark_response.json()
     print(cheapshark_response_json)
-    for game in cheapshark_response_json:
-        if float(game['salePrice']) < float(game['normalPrice']):
-            for store in store_response_init_json:
-                if game['storeID'] in store['storeID']:
+    game_title_check = ''
+    game_sale_price = ''
+    for game_count, game in enumerate(cheapshark_response_json):
+        if float(game['salePrice']) < float(game['normalPrice'] and
+                                            game['title'] == game_title_check and
+                                            game['salePrice'] == game_sale_price):
+            game_title_check = game['title']
+            game_sale_price = game['salePrice']
+        else:
+            for store_count, store in enumerate(store_response_init_json):
+                if game['storeID'] == store['storeID']:
                     print(f"Title: {game['title']}\n"
                           f"Store Name: {store['storeName']}\n"
                           f"Normal Price: {game['normalPrice']}\n"
                           f"Sale Price: {game['salePrice']}\n"
                           f"Link: {CHEAPSHARP_REDIRECT + game['dealID']}")
-        else:
-            pass
 
 
 def deal_lookup(user_deal):
@@ -57,14 +62,18 @@ while running:
             if game_title.lower() == 'n':
                 print(cheapshark_response_json)
                 game_title_check = ''
+                game_sale_price = ''
                 # need to fix the below poop. Trying to check to see if the next title matches the previous title and if so ignore it.
                 # it should look at the previous title and previous sale price and if the same then ignore it.
                 for games_counts, games in enumerate(cheapshark_response_json):
-                    if games['title'] == game_title_check:
+                    print(f"Title #{games_counts}: {games['title']}")
+                    if games['title'] == game_title_check and games['salePrice'] == game_sale_price:
                         game_title_check = cheapshark_response_json[games_counts]['title']
+                        game_sale_check = cheapshark_response_json[games_counts]['salePrice']
+                        print(f"{games_counts}. {game_title_check}")
                     else:
                         for store_counts, store in enumerate(store_response_init_json):
-                            if games['storeID'] in store['storeID']:
+                            if games['storeID'] == store['storeID']:
                                 print(f"Title: {games['title']}\n"
                                       f"Store Name: {store['storeName']}\n"
                                       f"Normal Price: {games['normalPrice']}\n"
@@ -82,5 +91,7 @@ while running:
     elif user_input.lower() == 'd':
         user_deal = input("Please enter the deal ID: \n")
         deal_lookup(user_deal)
+    elif user_input.lower() == 'e':
+        running = False
     else:
         print("I dont know what that is. Please try again.\n")
